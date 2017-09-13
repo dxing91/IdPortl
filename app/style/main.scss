@@ -1,3 +1,120 @@
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
+  background-color: #3063b3;
+  color: white;
+  font-family: 'Open Sans', arial;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 500;
+}
+
+.main-container {
+  &__h1 {
+    text-align: center;
+    font-size: 48px;
+  }
+}
+
+.details-form-container {
+  padding: 0 30px;
+}
+
+.documents-form-container {
+  padding: 0 30px;
+}
+
+.user-details {
+  padding: 5px 20px;
+  background-color: #e4e4e4;
   color: #333333;
+
+  &__h2 {
+    margin: 16px 0;
+  }
+
+  &__h3 {
+    text-decoration: underline;
+  }
+}
+
+.input {
+  &__label {
+    display: block;
+
+    &--button {
+      display: inline-block;
+      margin: 10px 10px 10px 0;
+      padding: 3px;
+      font-size: 10px;
+      background-color: rgba(255, 255, 255, 0);
+      border: 2px solid white;
+      color: white;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 1);
+        color: #3063b3;
+      }
+    }
+
+    &--label-tag {
+      cursor: pointer;
+    }
+  }
+
+  &__value {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    box-sizing: border-box;
+  }
+
+  &__select {
+    display: block;
+    height: 40px;
+    margin: 8px 0 20px 0;
+    padding: 8px;
+    border: none;
+    border-radius: 0;
+    background: #FFFFFF;
+  }
+
+  &__value--upload-button {
+    display: none;
+  }
+}
+
+.button {
+  background-color: rgba(255, 255, 255, 0);
+  border: 2px solid white;
+  margin-top: 15px;
+  padding: 10px;
+  color: white;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
+    color: #3063b3;
+    cursor: pointer;
+  }
+}
+
+.instruction {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.alert {
+  font-size: 12px;
+
+  &--red {
+    font-size: 12px;
+    color: #ce1313;
+  }
 }

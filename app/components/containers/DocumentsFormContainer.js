@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import FormState from 'forms/FormState'
 import { DOCUMENTS_FORM_SCHEMA_AUS, DOCUMENTS_FORM_SCHEMA_FOREIGN } from 'forms/schema'
-import { WelcomeMessage, UploadInput } from 'components/ui'
+import { UserDetails, UploadInput } from 'components/ui'
 import { uploadDocs } from 'helpers/api'
 
 export default class DocumentsFormContainer extends Component {
@@ -26,6 +26,7 @@ export default class DocumentsFormContainer extends Component {
 
   onFileInputChange = (e) => {
     this.formState.setValue(e.target.id, e.target.files[0])
+    this.forceUpdate()
   }
 
   onSubmit = (e) => {
@@ -49,48 +50,68 @@ export default class DocumentsFormContainer extends Component {
     }
   }
 
-  render() {
+  _renderUserDetails() {
     const { firstName, lastName, dob, address, passportNumber, isAustralianPassport } = this.props.location.state.details
-    const { errors } = this.formState
     return (
-      <div>
-        <WelcomeMessage
-          firstName={firstName}
-          lastName={lastName}
-          dob={dob}
-          address={address}
-          passportNumber={passportNumber}
-          isAustralianPassport={isAustralianPassport} />
+      <UserDetails
+        firstName={firstName}
+        lastName={lastName}
+        dob={dob}
+        address={address}
+        passportNumber={passportNumber}
+        isAustralianPassport={isAustralianPassport} />
+    )
+  }
+
+  _renderForm() {
+    const form = this.formState.form
+    const errors = this.formState.errors
+    const isAustralianPassport = this.props.location.state.details.isAustralianPassport
+    console.log(form)
+    return (
+      <form>
+        <UploadInput
+          id='lease'
+          label='Lease'
+          value={form.lease.name}
+          onChange={this.onFileInputChange}
+          errors={errors.lease}/>
+        <UploadInput
+          id='licence'
+          label='Licence'
+          value={form.licence.name}
+          onChange={this.onFileInputChange}
+          errors={errors.licence} />
+        <UploadInput
+          id='passport'
+          label='Passport'
+          value={form.passport.name}
+          onChange={this.onFileInputChange}
+          errors={errors.passport} />
+        {isAustralianPassport
+          ? null
+          : <UploadInput
+              id='supportingDoc'
+              label='Utility Bill or Rate Receipt'
+              value={form.supportingDoc.name}
+              onChange={this.onFileInputChange}
+              errors={errors.supportingDoc} />}
+        <button className='button' onClick={this.onSubmit}>Upload Documents</button>
+        {this.state.uploadSuccess ? 'Successfully uploaded.' : null}
+        {this.state.uploadError ? 'There was an error. Please try again.' : null}
+      </form>
+    )
+  }
+
+  render() {
+    
+    return (
+      <div className='documents-form-container'>
         <div>
-          <p>Please upload the following documents to complete your ID verification. All documents are required.</p>
-          <p>Only .jpg, .jpeg, .pdf or .png files are allowed.</p>
-          <form>
-            <UploadInput
-              id='lease'
-              label='Lease'
-              onChange={this.onFileInputChange}
-              errors={errors.lease}/>
-            <UploadInput
-              id='licence'
-              label='Licence'
-              onChange={this.onFileInputChange}
-              errors={errors.licence} />
-            <UploadInput
-              id='passport'
-              label='Passport'
-              onChange={this.onFileInputChange}
-              errors={errors.passport} />
-            {isAustralianPassport
-              ? null
-              : <UploadInput
-                  id='supportingDoc'
-                  label='Utility Bill or Rate Receipt'
-                  onChange={this.onFileInputChange}
-                  errors={errors.supportingDoc} />}
-            <button onClick={this.onSubmit}>Upload Documents</button>
-            {this.state.uploadSuccess ? 'Successfully uploaded.' : null}
-            {this.state.uploadError ? 'There was an error. Please try again.' : null}
-          </form>
+          {this._renderUserDetails()}
+          <p className='instruction'>Please upload the following documents to complete your ID verification. All documents are required.</p>
+          <p className='instruction'>Only .jpg, .jpeg, .pdf or .png files are allowed.</p>
+          {this._renderForm()}
         </div>
       </div>
     )

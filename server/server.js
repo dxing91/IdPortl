@@ -41,6 +41,24 @@ app.get('/', function(req, res) {
 
 app.post('/upload', upload.any(), function(req, res, next) {
   users.push(Object.assign({}, JSON.parse(req.body.details), {added: Date.now()}))
+  res.end()
+  // upload.any(req, res, function(error) {
+  //   var newFile = fs.createWriteStream(path.join(process.cwd(), '/uploads', '/test'))
+  //   req.on('readable', function() {
+  //     var fileBytes = req.headers['content-length']
+  //     var uploadedBytes = 0
+  //     var chunk = null;
+  //     while (null !== (chunk = req.read())) {
+  //       uploadedBytes += chunk.length
+  //       var progress = (uploadedBytes / fileBytes)
+  //       res.write('progress' + parseInt(progress, 10) + '%')
+  //     }
+  //   })
+  //   req.pipe(newFile)
+  //   req.on('end', function() {
+  //     res.end()
+  //   })
+  // })
 })
 
 var port = process.env.PORT || 8080
