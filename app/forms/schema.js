@@ -23,7 +23,7 @@ export const DETAILS_FORM_SCHEMA = {
   }
 }
 
-export const UPLOADS_FORM_SCHEMA = {
+export const DOCUMENTS_FORM_SCHEMA_AUS = {
   lease: {
     presence: true
   },
@@ -32,9 +32,12 @@ export const UPLOADS_FORM_SCHEMA = {
   },
   passport: {
     presence: true
-  },
+  }
+}
+
+export const DOCUMENTS_FORM_SCHEMA_FOREIGN = {
+  ...DOCUMENTS_FORM_SCHEMA_AUS,
   supportingDoc: {
-    presence: false
-    // TODO: fix conditional supportingDoc validation
+    presence: true
   }
 }

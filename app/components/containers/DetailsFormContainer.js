@@ -32,7 +32,7 @@ export default class DetailsFormContainer extends Component {
     const errors = this.formState.errors
     const noErrors = !Object.keys(errors).length
     if (noErrors) {
-      this.context.router.pushState({details: this.formState.form}, '/upload')
+      this.context.router.pushState({details: this.formState.form}, '/documents')
     } else {
       this.forceUpdate()
     }

@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import FormState from 'forms/FormState'
-import { UPLOADS_FORM_SCHEMA } from 'forms/schema'
+import { DOCUMENTS_FORM_SCHEMA_AUS, DOCUMENTS_FORM_SCHEMA_FOREIGN } from 'forms/schema'
 import { WelcomeMessage, UploadInput } from 'components/ui'
+import { uploadDocs } from 'helpers/api'
 
-export default class UploadsFormContainer extends Component {
-  constructor() {
+export default class DocumentsFormContainer extends Component {
+  constructor(props) {
     super()
-    this.formState = new FormState(UPLOADS_FORM_SCHEMA)
     this.state = {
       errors: {},
-      error: false
+      error: false,
+      uploadSuccess: false,
+      uploadError: false
     }
   }
 
@@ -18,10 +20,12 @@ export default class UploadsFormContainer extends Component {
     if (!this.props.location.state) {
       this.context.router.push('/')
     }
+    const schema = this.props.location.state.details.isAustralianPassport ? DOCUMENTS_FORM_SCHEMA_AUS : DOCUMENTS_FORM_SCHEMA_FOREIGN
+    this.formState = new FormState(schema)
   }
 
   onFileInputChange = (e) => {
-    this.formState.setValue(e.target.id, e.target.files)
+    this.formState.setValue(e.target.id, e.target.files[0])
   }
 
   onSubmit = (e) => {
@@ -30,7 +34,16 @@ export default class UploadsFormContainer extends Component {
     const errors = this.formState.errors
     const noErrors = !Object.keys(errors).length
     if (noErrors) {
-      console.log(this.formState.form)
+      const form = this.formState.form
+      let data = new FormData()
+      const userDetails = this.props.location.state.details
+      data.append('details', JSON.stringify(userDetails))
+      for (let doc in form) {
+        data.append(doc, form[doc])
+      }
+      uploadDocs(data)
+        .then(() => this.setState({uploadSuccess: true}))
+        .catch((error) => this.setState({uploadError: true}))
     } else {
       this.forceUpdate()
     }
@@ -50,6 +63,7 @@ export default class UploadsFormContainer extends Component {
           isAustralianPassport={isAustralianPassport} />
         <div>
           <p>Please upload the following documents to complete your ID verification. All documents are required.</p>
+          <p>Only .jpg, .jpeg, .pdf or .png files are allowed.</p>
           <form>
             <UploadInput
               id='lease'
@@ -74,6 +88,8 @@ export default class UploadsFormContainer extends Component {
                   onChange={this.onFileInputChange}
                   errors={errors.supportingDoc} />}
             <button onClick={this.onSubmit}>Upload Documents</button>
+            {this.state.uploadSuccess ? 'Successfully uploaded.' : null}
+            {this.state.uploadError ? 'There was an error. Please try again.' : null}
           </form>
         </div>
       </div>
@@ -81,7 +97,7 @@ export default class UploadsFormContainer extends Component {
   }
 }
 
-UploadsFormContainer.contextTypes = {
+DocumentsFormContainer.contextTypes = {
   router: PropTypes.object
 }
 
