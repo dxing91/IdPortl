@@ -10,13 +10,20 @@ export default class DetailsFormContainer extends Component {
     super()
     this.formState = new FormState(DETAILS_FORM_SCHEMA)
     this.state = {
-      error: false
+      error: false,
+      passportType: null
     }
   }
 
   onInputChange = (e) => {
-    this.formState.setValue(e.target.id, e.target.value)
-    this.forceUpdate()
+    if (e.target.id === 'isAustralianPassport') {
+      const isAustralianPassport = e.target.value === 'Yes'
+      this.formState.setValue(e.target.id, isAustralianPassport)
+      this.setState({passportType: isAustralianPassport ? 'Australian' : 'Foreign'})
+    } else {
+      this.formState.setValue(e.target.id, e.target.value)
+      this.forceUpdate()
+    }
   }
 
   onSubmit = (e) => {
@@ -32,6 +39,7 @@ export default class DetailsFormContainer extends Component {
   }
 
   render() {
+    const { form, errors } = this.formState
     return (
       <div>
         <p>Please fill in the details below. Upon submission you will then be directed to upload the required documents.</p>
@@ -39,40 +47,42 @@ export default class DetailsFormContainer extends Component {
           <Input
             id='firstName'
             label='First Name'
-            value={this.formState.form.firstName}
+            value={form.firstName}
             onChange={this.onInputChange}
-            errors={this.formState.errors.firstName} />
+            errors={errors.firstName} />
           <Input
             id='lastName'
             label='Last Name'
-            value={this.formState.form.lastName}
+            value={form.lastName}
             onChange={this.onInputChange}
-            errors={this.formState.errors.lastName} />
+            errors={errors.lastName} />
           <Input
             id='dob'
             label='Date of Birth'
-            value={this.formState.form.dob}
+            value={form.dob}
             onChange={this.onInputChange}
-            errors={this.formState.errors.dob} />
+            errors={errors.dob} />
           <Input
             id='address'
             label='Address'
-            value={this.formState.form.address}
+            value={form.address}
             onChange={this.onInputChange}
-            errors={this.formState.errors.address} />
-          <Input
-            id='passportNumber'
-            label='Passport Number'
-            value={this.formState.form.passportNumber}
-            onChange={this.onInputChange}
-            errors={this.formState.errors.passportNumber} />
+            errors={errors.address} />
           <SelectInput
             id='isAustralianPassport'
-            label='Is Your Passport Australian?'
-            value={this.formState.form.isAustralianPassport}
+            label='Do You Have An Australian Passport?'
+            value={form.isAustralianPassport === '' ? '' : form.isAustralianPassport ? 'Yes' : 'No'}
             options={['Yes', 'No']}
             onChange={this.onInputChange}
-            errors={this.formState.errors.isAustralianPassport} />
+            errors={errors.isAustralianPassport} />
+          {this.state.passportType
+            ? <Input
+                id='passportNumber'
+                label={`${this.state.passportType} Passport Number`}
+                value={form.passportNumber}
+                onChange={this.onInputChange}
+                errors={errors.passportNumber} />
+            : null}
           <button onClick={this.onSubmit}>Submit</button>
         </form>
       </div>

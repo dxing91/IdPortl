@@ -22,3 +22,19 @@ export const DETAILS_FORM_SCHEMA = {
     presence: true
   }
 }
+
+export const UPLOADS_FORM_SCHEMA = {
+  lease: {
+    presence: true
+  },
+  licence: {
+    presence: true
+  },
+  passport: {
+    presence: true
+  },
+  supportingDoc: {
+    presence: false
+    // TODO: fix conditional supportingDoc validation
+  }
+}
