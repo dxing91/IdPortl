@@ -93,7 +93,7 @@ h1, h2, h3, h4 {
 .button {
   background-color: rgba(255, 255, 255, 0);
   border: 2px solid white;
-  margin-top: 15px;
+  margin: 15px 15px 0 0;
   padding: 10px;
   color: white;
   text-transform: uppercase;
@@ -111,9 +111,11 @@ h1, h2, h3, h4 {
 }
 
 .alert {
+  margin-bottom: 10px;
   font-size: 12px;
 
   &--red {
+    margin-bottom: 10px;
     font-size: 12px;
     color: #ce1313;
   }

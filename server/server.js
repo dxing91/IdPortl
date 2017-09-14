@@ -17,18 +17,12 @@ var storage = multer.diskStorage({
 	}
 })
 
-var fileFilter = function(req, file, cb) {
-  var ext = path.extname(file.originalname)
-  if (ext !== '.jpg' && ext !== '.jpeg' && ext !== '.pdf' && ext !== '.png' && ext !== '.docx') {
-    // remove docx later
-    cb(null, false)
-  }
-  cb(null, true)
-}
-
 var upload = multer({
   storage: storage,
-  fileFilter: fileFilter
+  onError: function(error, next) {
+    console.log(error)
+    next(error)
+  }
 })
 
 app.use(express.static(path.join(process.cwd(), '/dist')))
@@ -41,7 +35,8 @@ app.get('/', function(req, res) {
 
 app.post('/upload', upload.any(), function(req, res, next) {
   users.push(Object.assign({}, JSON.parse(req.body.details), {added: Date.now()}))
-  res.end()
+  res.status(200).end('Successfully uploaded.')
+  // res.end()
   // upload.any(req, res, function(error) {
   //   var newFile = fs.createWriteStream(path.join(process.cwd(), '/uploads', '/test'))
   //   req.on('readable', function() {
@@ -59,6 +54,10 @@ app.post('/upload', upload.any(), function(req, res, next) {
   //     res.end()
   //   })
   // })
+})
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(process.cwd(), '/dist/index.html'))
 })
 
 var port = process.env.PORT || 8080

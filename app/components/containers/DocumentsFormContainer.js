@@ -43,7 +43,10 @@ export default class DocumentsFormContainer extends Component {
         data.append(doc, form[doc])
       }
       uploadDocs(data)
-        .then(() => this.setState({uploadSuccess: true}))
+        .then((res) => {
+          if (res.data !== 'Successfully uploaded.') throw new Error()
+          this.setState({uploadSuccess: true})
+        })
         .catch((error) => this.setState({uploadError: true}))
     } else {
       this.forceUpdate()
@@ -67,7 +70,6 @@ export default class DocumentsFormContainer extends Component {
     const form = this.formState.form
     const errors = this.formState.errors
     const isAustralianPassport = this.props.location.state.details.isAustralianPassport
-    console.log(form)
     return (
       <form>
         <UploadInput
@@ -97,8 +99,8 @@ export default class DocumentsFormContainer extends Component {
               onChange={this.onFileInputChange}
               errors={errors.supportingDoc} />}
         <button className='button' onClick={this.onSubmit}>Upload Documents</button>
-        {this.state.uploadSuccess ? 'Successfully uploaded.' : null}
-        {this.state.uploadError ? 'There was an error. Please try again.' : null}
+        {this.state.uploadSuccess ? <span className='alert'>'Successfully uploaded.'</span> : null}
+        {this.state.uploadError ? <span className='alert--red'>'There was an error. Please try again.'</span> : null}
       </form>
     )
   }
