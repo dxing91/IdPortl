@@ -8,13 +8,13 @@ var utils = require('./utils')
 var app = express()
 
 var storage = multer.diskStorage({
-	destination: function(req, file, cb) {
-		cb(null, path.join(process.cwd(), '/uploads'))
-	},
-	filename: function(req, file, cb) {
+  destination: function(req, file, cb) {
+    cb(null, path.join(process.cwd(), '/uploads'))
+  },
+  filename: function(req, file, cb) {
     const userDetails = JSON.parse(req.body.details)
-		cb(null, userDetails.firstName + '-' + userDetails.lastName + '-' + file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-	}
+    cb(null, userDetails.firstName + '-' + userDetails.lastName + '-' + file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
 })
 
 var upload = multer({
