@@ -39,6 +39,12 @@ export default class DetailsFormContainer extends Component {
     }
   }
 
+  _renderInstruction() {
+    return (
+      <p className='instruction'>Please fill in the details below. Upon submission you will then be directed to upload the required documents.</p>
+    )
+  }
+
   _renderForm() {
     const { form, errors } = this.formState
     return (
@@ -105,7 +111,7 @@ export default class DetailsFormContainer extends Component {
   render() {
     return (
       <div className='details-form-container'>
-        <p className='instruction'>Please fill in the details below. Upon submission you will then be directed to upload the required documents.</p>
+        {this._renderInstruction()}
         {this._renderForm()}
       </div>
     )

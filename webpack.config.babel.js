@@ -18,8 +18,8 @@ const PATHS = {
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle
 
-const isProduction = LAUNCH_COMMAND === 'production'
-process.env.BABEL_ENV = LAUNCH_COMMAND
+const isProduction = LAUNCH_COMMAND === 'start'
+process.env.BABEL_ENV = isProduction ? 'production' : 'dev'
 
 const productionPlugin = new webpack.DefinePlugin({
   'process.env': {

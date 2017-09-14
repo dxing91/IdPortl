@@ -11,8 +11,8 @@ export function uploadDocs(filesData, userDetails) {
 
   const config = {
     onUploadProgress: (progressEvent) => {
-      let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-      store.dispatch(updateProgressBar(percentCompleted))
+      let percentComplete = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      store.dispatch(updateProgressBar(percentComplete))
     }
   }
 

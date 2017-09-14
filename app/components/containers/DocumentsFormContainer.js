@@ -10,7 +10,7 @@ import { uploadDocs } from 'helpers/api'
 import { ACCEPTED_FILE_EXTENSIONS } from 'config/constants'
 
 class DocumentsFormContainer extends Component {
-  constructor(props) {
+  constructor() {
     super()
   }
 
