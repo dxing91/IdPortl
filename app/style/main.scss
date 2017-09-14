@@ -120,3 +120,16 @@ h1, h2, h3, h4 {
     color: #ce1313;
   }
 }
+
+.progress-bar {
+  display: inline-block;
+  height: 15px;
+  width: 200px;
+  background-color: #dddddd;
+
+  &__progress {
+    display: inline-block;
+    height: 15px;
+    background-color: #00e673;
+  }
+}

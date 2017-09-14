@@ -1,19 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as uploadActions from 'store/upload'
 import FormState from 'forms/FormState'
 import { DOCUMENTS_FORM_SCHEMA_AUS, DOCUMENTS_FORM_SCHEMA_FOREIGN } from 'forms/schema'
-import { UserDetails, UploadInput } from 'components/ui'
+import { UserDetails, UploadInput, ProgressBar } from 'components/ui'
 import { uploadDocs } from 'helpers/api'
 
-export default class DocumentsFormContainer extends Component {
+class DocumentsFormContainer extends Component {
   constructor(props) {
     super()
-    this.state = {
-      errors: {},
-      error: false,
-      uploadSuccess: false,
-      uploadError: false
-    }
   }
 
   componentWillMount() {
@@ -35,19 +32,17 @@ export default class DocumentsFormContainer extends Component {
     const errors = this.formState.errors
     const noErrors = !Object.keys(errors).length
     if (noErrors) {
-      const form = this.formState.form
-      let data = new FormData()
+      const fileData = this.formState.form
       const userDetails = this.props.location.state.details
-      data.append('details', JSON.stringify(userDetails))
-      for (let doc in form) {
-        data.append(doc, form[doc])
-      }
-      uploadDocs(data)
+      this.props.isUploading()
+      uploadDocs(fileData, userDetails)
         .then((res) => {
-          if (res.data !== 'Successfully uploaded.') throw new Error()
-          this.setState({uploadSuccess: true})
+          if (!res) throw new Error()
+          this.props.uploadSuccess()
         })
-        .catch((error) => this.setState({uploadError: true}))
+        .catch((error) => {
+          this.props.uploadError()
+        })
     } else {
       this.forceUpdate()
     }
@@ -99,9 +94,19 @@ export default class DocumentsFormContainer extends Component {
               onChange={this.onFileInputChange}
               errors={errors.supportingDoc} />}
         <button className='button' onClick={this.onSubmit}>Upload Documents</button>
-        {this.state.uploadSuccess ? <span className='alert'>'Successfully uploaded.'</span> : null}
-        {this.state.uploadError ? <span className='alert--red'>'There was an error. Please try again.'</span> : null}
+        {this._renderUploadStatus()}
       </form>
+    )
+  }
+
+  _renderUploadStatus() {
+    const upload = this.props.upload
+    return (
+      <span>
+        {upload.isUploading ? <ProgressBar progress={upload.progressBar} /> : null}
+        {upload.uploadSuccess ? <span className='alert'>'Successfully uploaded.'</span> : null}
+        {upload.uploadError ? <span className='alert--red'>{upload.uploadError}</span> : null}
+      </span>
     )
   }
 
@@ -123,5 +128,17 @@ export default class DocumentsFormContainer extends Component {
 DocumentsFormContainer.contextTypes = {
   router: PropTypes.object
 }
+
+function mapStateToProps({upload}) {
+  return {
+    upload
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(uploadActions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentsFormContainer)
 
 //TODO: submit button reusuable component
