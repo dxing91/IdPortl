@@ -1,4 +1,5 @@
 import React from 'react'
+import { ACCEPTED_FILE_EXTENSIONS } from 'config/constants'
 
 export default function UploadInput({id, label, value, onChange, errors}) {
   return (
@@ -11,7 +12,7 @@ export default function UploadInput({id, label, value, onChange, errors}) {
             id={id}
             className='input__value--upload-button'
             type='file'
-            accept='.png, .jpg, .jpeg, .pdf, .mkv'
+            accept={ACCEPTED_FILE_EXTENSIONS.join(', ')}
             onChange={onChange} />
         </label>
       </div>

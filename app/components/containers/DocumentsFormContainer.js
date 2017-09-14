@@ -7,6 +7,7 @@ import FormState from 'forms/FormState'
 import { DOCUMENTS_FORM_SCHEMA_AUS, DOCUMENTS_FORM_SCHEMA_FOREIGN } from 'forms/schema'
 import { UserDetails, UploadInput, ProgressBar } from 'components/ui'
 import { uploadDocs } from 'helpers/api'
+import { ACCEPTED_FILE_EXTENSIONS } from 'config/constants'
 
 class DocumentsFormContainer extends Component {
   constructor(props) {
@@ -111,13 +112,12 @@ class DocumentsFormContainer extends Component {
   }
 
   render() {
-    
     return (
       <div className='documents-form-container'>
         <div>
           {this._renderUserDetails()}
           <p className='instruction'>Please upload the following documents to complete your ID verification. All documents are required.</p>
-          <p className='instruction'>Only .jpg, .jpeg, .pdf or .png files are allowed.</p>
+          <p className='instruction'>Accepted file types: {ACCEPTED_FILE_EXTENSIONS.join(', ')}</p>
           {this._renderForm()}
         </div>
       </div>
