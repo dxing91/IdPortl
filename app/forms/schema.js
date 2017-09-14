@@ -6,14 +6,14 @@ export const DETAILS_FORM_SCHEMA = {
   firstName: {
     presence: true,
     format: {
-      pattern: '[A-z]+',
+      pattern: '[A-z|-]+',
       message: 'must be a valid name.'
     }
   },
   lastName: {
     presence: true,
     format: {
-      pattern: '[A-z]+',
+      pattern: '[A-z|-]+',
       message: 'must be a valid name.'
     }
   },
