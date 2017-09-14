@@ -26,6 +26,10 @@ h1, h2, h3, h4 {
 
 .documents-form-container {
   padding: 0 30px;
+
+  &__status {
+    margin-top: 15px;
+  }
 }
 
 .user-details {
@@ -117,7 +121,7 @@ h1, h2, h3, h4 {
   &--red {
     margin-bottom: 10px;
     font-size: 12px;
-    color: #ce1313;
+    color: #ff7a7a;
   }
 }
 

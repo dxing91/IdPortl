@@ -4,12 +4,26 @@ validate.validators.presence.message = 'is required.'
 
 export const DETAILS_FORM_SCHEMA = {
   firstName: {
-    presence: true
+    presence: true,
+    format: {
+      pattern: '[A-z]+',
+      message: 'must be a valid name.'
+    }
   },
   lastName: {
+    presence: true,
+    format: {
+      pattern: '[A-z]+',
+      message: 'must be a valid name.'
+    }
+  },
+  dobDay: {
     presence: true
   },
-  dob: {
+  dobMonth: {
+    presence: true
+  },
+  dobYear: {
     presence: true
   },
   address: {

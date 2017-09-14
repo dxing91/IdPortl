@@ -21,5 +21,3 @@ export default function UploadInput({id, label, value, onChange, errors}) {
     </div>
   )
 }
-
-//TODO: remove mkv file type after testing

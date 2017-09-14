@@ -50,15 +50,27 @@ class DocumentsFormContainer extends Component {
   }
 
   _renderUserDetails() {
-    const { firstName, lastName, dob, address, passportNumber, isAustralianPassport } = this.props.location.state.details
+    const { firstName, lastName, dobDay, dobMonth, dobYear,
+      address, passportNumber, isAustralianPassport } = this.props.location.state.details
     return (
       <UserDetails
         firstName={firstName}
         lastName={lastName}
-        dob={dob}
+        dobDay={dobDay}
+        dobMonth={dobMonth}
+        dobYear={dobYear}
         address={address}
         passportNumber={passportNumber}
         isAustralianPassport={isAustralianPassport} />
+    )
+  }
+
+  _renderInstruction() {
+    return (
+      <div>
+        <p className='instruction'>Please upload the following documents to complete your ID verification. All documents are required.</p>
+        <p className='instruction'>Accepted file types: {ACCEPTED_FILE_EXTENSIONS.join(', ')}</p>
+      </div>
     )
   }
 
@@ -95,7 +107,6 @@ class DocumentsFormContainer extends Component {
               onChange={this.onFileInputChange}
               errors={errors.supportingDoc} />}
         <button className='button' onClick={this.onSubmit}>Upload Documents</button>
-        {this._renderUploadStatus()}
       </form>
     )
   }
@@ -103,11 +114,11 @@ class DocumentsFormContainer extends Component {
   _renderUploadStatus() {
     const upload = this.props.upload
     return (
-      <span>
+      <div className='documents-form-container__status'>
         {upload.isUploading ? <ProgressBar progress={upload.progressBar} /> : null}
         {upload.uploadSuccess ? <span className='alert'>'Successfully uploaded.'</span> : null}
         {upload.uploadError ? <span className='alert--red'>{upload.uploadError}</span> : null}
-      </span>
+      </div>
     )
   }
 
@@ -116,9 +127,9 @@ class DocumentsFormContainer extends Component {
       <div className='documents-form-container'>
         <div>
           {this._renderUserDetails()}
-          <p className='instruction'>Please upload the following documents to complete your ID verification. All documents are required.</p>
-          <p className='instruction'>Accepted file types: {ACCEPTED_FILE_EXTENSIONS.join(', ')}</p>
+          {this._renderInstruction()}
           {this._renderForm()}
+          {this._renderUploadStatus()}
         </div>
       </div>
     )
@@ -140,5 +151,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentsFormContainer)
-
-//TODO: submit button reusuable component

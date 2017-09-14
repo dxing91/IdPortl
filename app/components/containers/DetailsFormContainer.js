@@ -4,6 +4,7 @@ import FormState from 'forms/FormState'
 import { DETAILS_FORM_SCHEMA } from 'forms/schema'
 import { Input, SelectInput } from 'components/ui'
 import validate from 'validate.js'
+import { days, months, years } from 'helpers/constants'
 
 export default class DetailsFormContainer extends Component {
   constructor() {
@@ -54,12 +55,27 @@ export default class DetailsFormContainer extends Component {
           value={form.lastName}
           onChange={this.onInputChange}
           errors={errors.lastName} />
-        <Input
-          id='dob'
-          label='Date of Birth'
-          value={form.dob}
-          onChange={this.onInputChange}
-          errors={errors.dob} />
+        <div>
+          <span className='input__label'>Date of Birth</span>
+          <SelectInput
+            id='dobDay'
+            value={form.dobDay}
+            options={days}
+            onChange={this.onInputChange}
+            errors={errors.dobDay} />
+          <SelectInput
+            id='dobMonth'
+            value={form.dobMonth}
+            options={months}
+            onChange={this.onInputChange}
+            errors={errors.dobMonth} />
+          <SelectInput
+            id='dobYear'
+            value={form.dobYear}
+            options={years}
+            onChange={this.onInputChange}
+            errors={errors.dobYear} />
+        </div>
         <Input
           id='address'
           label='Address'

@@ -5,3 +5,5 @@ export const ACCEPTED_FILE_EXTENSIONS = [
   '.pdf',
   '.mkv'
 ]
+
+//TODO: remove mkv file type after testing
